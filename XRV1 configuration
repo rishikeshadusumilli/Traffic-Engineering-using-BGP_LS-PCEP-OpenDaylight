@@ -1,0 +1,71 @@
+hostname xrv1
+ipv4 unnumbered mpls traffic-eng Loopback1
+interface Loopback1
+ ipv4 address 10.0.0.1 255.255.255.0
+!
+interface GigabitEthernet0/0/0/0
+ ipv4 address 10.0.1.1 255.255.255.0
+!
+interface GigabitEthernet0/0/0/1
+ ipv4 address 10.0.3.1 255.255.255.0
+!
+interface GigabitEthernet0/0/0/6
+ ipv4 address 192.168.55.102 255.255.255.0
+!
+router ospf 1
+ distribute bgp-ls
+ address-family ipv4 unicast
+ area 0
+  interface Loopback1
+    network point-to-point
+  !
+  interface GigabitEthernet0/0/0/0
+    network point-to-point
+  !
+  interface GigabitEthernet0/0/0/1
+    network point-to-point
+  !
+ !
+!
+router bgp 64496
+ address-family ipv4 unicast
+ !
+ address-family link-state link-state
+ !
+ neighbor 192.168.55.105
+  remote-as 64496
+  address-family ipv4 unicast
+  !
+  address-family link-state link-state
+   route-reflector-client
+  !
+ !
+!
+rsvp
+ interface GigabitEthernet0/0/0/0
+  bandwidth 100 100
+ !
+ interface GigabitEthernet0/0/0/1
+  bandwidth 100 100
+ !
+!
+mpls traffic-eng
+ interface GigabitEthernet0/0/0/0
+ !
+ interface GigabitEthernet0/0/0/1
+ !
+ pce
+  peer source ipv4 192.168.55.102
+  peer ipv4 192.168.55.105
+  !
+  segment-routing
+  stateful-client
+   instantiation
+  !
+ !
+ auto-tunnel pcc
+  tunnel-id min 1 max 99
+ !
+ reoptimize timers delay installation 0
+!
+end
