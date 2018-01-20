@@ -1,0 +1,35 @@
+Traffic Engineering (TE) using BGP-LS and PCEP
+
+The growth of technology has given rise to intelligent networks, but it is becoming increasingly daunting to deploy and maintain large-scale networks using legacy architecture. Software Defined Networking (SDN) offers complete network visibility by separating the intelligence from the network devices and by placing it into a centralized controller. An SDN controller can easily gather telemetry data from the network infrastructure using an appropriate southbound interface protocol and at the same time, it can easily be managed by network engineers using an application over a northbound interface protocol. This model offers better infrastructure control, visibility, and scalability compared to traditional networking.
+
+This project tries to solve the traditional networking problems related to scalability and visibility using an SDN approach with an intelligent controller delegating MPLS traffic engineering paths to the infrastructure using PCEP and BGP (BGP-LS) as the southbound interface protocol. The following are the important protocols, and platforms used,
+
+1.	SDN Controller: OpenDaylight (ODL) is selected as the SDN controller. This will be configured with BGP to receive link-state network information from the infrastructure devices over BGP-LS (BGP Link-State) as a southbound interface protocol.
+2.	RESTCONF: Rest like northbound interface protocol provides a programmatic interface to interact with the SDN controller. It is used to perform Traffic Engineering (TE) using PCEP with the network topology information obtained over BGP-LS.
+3.	Infrastructure: Cisco IOS-XR devices are used to build the network required for the project. OSPF is configured on all the Cisco IOS-XR devices to achieve complete connectivity among themselves.
+4.	Application: Flask and Python are used to provide a GUI type application for the user to interact with OpenDaylight using RESTCONF. It is also used to perform LSP signaling (Create/Update/Remove) actions and to view link-state topology information.
+5.	OpenDaylight (ODL) performs Traffic Engineering (TE) by signaling LSPs using Path Computation Element Protocol (PCEP) and by using the link-state network information gathered using BGP-LS protocol.
+6.	ODL is configured with a Path Computation Element (PCE) and one of the Cisco IOS-XR devices are configured with a Path Computation Client (PCC). PCEP is a protocol for communication between a PCE and a PCC.
+7.	BGP-LS provides the link-state topology information such as bandwidth, nodes, links, etc. for the PCE in ODL to perform LSP calculations. It will then delegate the LSPs to the PCC in IOS-XR neighbor to perform MPLS traffic engineering within the topology of IOS-XR devices.
+
+The Significance of SDN in large-scale networks as indicated by this project is as follows,
+1.	SDN technology should be integrated with WAN networks to achieve WAN automation, network visibility, and better scalability. BGP-LS and PCEP can facilitate this integration using existing hardware without incurring additional cost on new hardware.
+2.	SDN Traffic Engineering in WAN networks can be used for dynamic bandwidth calculation and delegation using LSP signaling. It also helps in efficient network management and operations.
+3.	This project implementation moves the LSP calculation from the head end of the MPLS tunnel to the centralized controller, thus providing better visibility and control of LSPs.
+
+This project offers the following benefits over traditional implementations,
+1.	SDN controller can easily gather network information such as bandwidth, nodes, links, metrics, etc. using BGP-LS without the need to interact with the CLI of the devices.
+2.	LSP computations by PCE in the SDN controller are more efficient than the computations performed on the MPLS tunnel head device due to better visibility of the network from the SDN controller.
+3.	SDN offers better programmability of the WAN network. Tasks such as bandwidth allocation, LSP creation, and deletion can be automated using RESTCONF type northbound interface protocols.
+4.	Network engineers will gain complete control of the large-scale networks and would be able to perform faster and better troubleshooting.
+5.	Scalability of the networks can be easily achieved using a centralized SDN controller.
+
+Management of large-scale networks would become extremely easy and more efficient with the help of a centralized SDN controller. This project displays the functionality of BGP-LS to gain a complete view of the network and the SDN controller's ability to perform MPLS Traffic Engineering (TE) with the help of PCEP and BGP-LS protocols. 
+
+References:
+[1] Kevinxw, "kevinxw/opendaylight-setup," GitHub. [Online]. Available: https://github.com/kevinxw/opendaylight-setup/blob/master/docs/tutorial/config-pcep.md. [Accessed: 27-Nov-2017].
+[2] Diptanshu Singh, "Yet Another new BGP NLRI: BGP-LS - Packet Pushers -," Packet Pushers, 30-Aug-2015. [Online]. Available: http://packetpushers.net/yet-another-new-bgp-nlri-bgp-ls/. [Accessed: 27-Nov-2017].
+[3] Tim Gregory, "Posts about BGP-LS on PACKETS AND STUFF," PACKETS AND STUFF. [Online]. Available: https://tgregory.org/category/bgp-ls/. [Accessed: 27-Nov-2017].
+[4] C. Cengiz Alaettinoglu, "BGP-LS: What Is It Good For? | Packet Design", Packet Design,
+2017. [Online]. Available: http://www.packetdesign.com/blog/bgp-ls-what-is-it-good-for/.
+[Accessed: 30- Oct- 2017].
